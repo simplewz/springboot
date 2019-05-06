@@ -87,6 +87,7 @@ public class GreetingController {
    ![java运行jar包运行效果](https://github.com/simplewz/springboot/blob/master/images/1557111566.jpg)
    
 7. 运行效果
+
   在浏览器中输入[http://localhost:8080/greeting](http://localhost:8080/greeting) ，浏览器返回如下结果：
   
   ![运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557112203.jpg)
@@ -94,4 +95,6 @@ public class GreetingController {
   在请求中可以带参数进行请求，在浏览器中输入[http://localhost:8080/greeting?name=Simple](http://localhost:8080/greeting?name=Simple) ,浏览器返回如下结果：
   
   ![带参数请求运行效果](https://github.com/simplewz/springboot/blob/master/images/1557112428.jpg)
+  
+  可以看到第二次请求的id自增了，而且请求的参数也被接收到了。
    
