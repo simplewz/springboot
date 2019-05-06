@@ -80,3 +80,18 @@ public class GreetingController {
    1. 使用IDE运行SprngBoot应用只需用运行普通Java程序的方式运行前面所创建的Application.java程序即可。
    2. 使用maven运行需要安装maven，在命令行界面中切换到该应用所在的目录，然后使用mvn spring-boot:run命令即可运行，其运行效果图如下：
    
+   ![mvn运行效果](https://github.com/simplewz/springboot/blob/master/images/1557109717.jpg)
+   
+   3. 也可以将项目打包成jar包，用java运行jar包的方式运行。首先使用maven将工程打包为jar包，其方式是切换到工程目录，使用mvn package命令即可将工程打包为jar包，然后使用java运行jar包的命令运行应用即可，运行效果如下：
+   
+   ![java运行jar包运行效果](https://github.com/simplewz/springboot/blob/master/images/1557111566.jpg)
+   
+7. 运行效果
+  在浏览器中输入[http://localhost:8080/greeting](http://localhost:8080/greeting) ，浏览器返回如下结果：
+  
+  ![运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557112203.jpg)
+  
+  在请求中可以带参数进行请求，在浏览器中输入[http://localhost:8080/greeting?name=Simple] ,浏览器返回如下结果：
+  
+  ![带参数请求运行效果](https://github.com/simplewz/springboot/blob/master/images/1557112428.jpg)
+   
