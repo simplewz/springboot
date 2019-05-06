@@ -91,7 +91,7 @@ public class GreetingController {
   
   ![运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557112203.jpg)
   
-  在请求中可以带参数进行请求，在浏览器中输入[http://localhost:8080/greeting?name=Simple] ,浏览器返回如下结果：
+  在请求中可以带参数进行请求，在浏览器中输入[http://localhost:8080/greeting?name=Simple](http://localhost:8080/greeting?name=Simple) ,浏览器返回如下结果：
   
   ![带参数请求运行效果](https://github.com/simplewz/springboot/blob/master/images/1557112428.jpg)
    
