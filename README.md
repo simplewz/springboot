@@ -97,4 +97,66 @@ public class GreetingController {
   ![带参数请求运行效果](https://github.com/simplewz/springboot/blob/master/images/1557112428.jpg)
   
   可以看到第二次请求的id自增了，而且请求的参数也被接收到了。
+  
+  
+  
+  ### 二.使用SpringBoot创建定时任务
+  1. 创建一个名为gs-scheduling-tasks的maven工程，并且在maven工程中添加pom文件，pom文件代码可参考spring官网 https://spring.io/guides 官网中的scheduling tasks应用的pom.xml文件。
+  2. 在新建的maven工程中创建如下的目录结构：
+  <pre>
+  	src
+	 |__main
+	      |__java
+	           |__org.simple.schedul
+		   |__org.simple.schedul.sercice
+  </pre>
+  
+  3.在包org.simple.schedul下创建Application.java文件，其代码如下：
+ ```
+		@EnableScheduling
+		@SpringBootApplication
+		public class Application {
+
+			public static void main(String[] args) {
+				SpringApplication.run(Application.class, args);
+			}
+		}
+  ```
+	
+**注意：与普通的SpringBoot应用程序相比，该应用的不仅需要@SpringBootApplication注解，还需要@EnableScheduling开启定时任务，如果没有该注解，定时任务将不会得到执行。**
+
+4. 在org.simple.schedul.service包下创建ScheduledTasks.java文件，其代码如下：
+```
+	@Component
+	public class ScheduledTasks {
+	
+		private static final Logger log =LoggerFactory.getLogger(ScheduledTasks.class);
+	
+		private static final SimpleDateFormat dateFormat=new SimpleDateFormat("HH:mm:ss");
+	
+		@Scheduled(fixedRate=5000)
+		public void reportCurrentTime() {
+			log.info("The time is now(){}",dateFormat.format(new Date()));
+		}
+	}
+```
+
+**注意：在该类上使用@Component注解将该类纳入Spring容器进行管理，在该类中只有一个报告时间的方法reportCurrentTime，在该方法上我们使用了@Scheduled(fixedRate=5000)注解，其含义是每隔5秒钟在控制台上打印当前时间。**
+
+5. 运行SpringBoot应用程序
+运行该应用程序将会看到每隔5秒钟控制台上打印当前时间，运行效果如下：
+
+   ![定时任务运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557123832.jpg)
+   
+6. 关于@Scheduled注解
+    在我们的示例应用中，我们在@Scheduled注解里指定fixRate=5000，fixRate后面指定的值是时间，单位是毫秒，所以在我们的应用正常运行之后，我们看到控制台上每个5秒总打印一次当前时间。
+   
+   关于更多@Scheduled注解的参数信息，可参考简书文章[@Scheduled注解各参数详解](https://www.jianshu.com/p/1defb0f22ed1)
+
+
+
+
+
+
+
    
