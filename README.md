@@ -152,8 +152,148 @@ public class GreetingController {
     在我们的示例应用中，我们在@Scheduled注解里指定fixRate=5000，fixRate后面指定的值是时间，单位是毫秒，所以在我们的应用正常运行之后，我们看到控制台上每个5秒总打印一次当前时间。
    
    关于更多@Scheduled注解的参数信息，可参考简书文章[@Scheduled注解各参数详解](https://www.jianshu.com/p/1defb0f22ed1)
+   
+   
+ ### 三.使用SpringBoot接收一个符合RESTful风格的接口数据
+   
+   我们知道两个应用之间的相互通信一般是通过接口实现的，这里，我们将创建一个应用接收来自 http://gturnquist-quoters.cfapps.io/api/random 的数据。可以在浏览器中输入该地址，我们看到该地址返回的数据是标准的json格式的数据，示例返回数据如下：
+   
+ <pre>
+	{
+		"type": "success",
+		"value": {
+			"id": 11,
+			"quote": "I have two hours today to build an app from scratch. @springboot to the rescue!"
+		}
+	}
+</pre>
+	
+1. 创建一个名称为consuming-restful-service的maven工程，并在工程中添加pom文件，pom文件的代码可参考pom文件代码可参考spring官网 https://spring.io/guides 官网中的Consuming a RESTful Web Service应用的pom.xml文件。
+
+2. 在Maven工程中建立如下项目结构：
+   
+   <pre>
+	  src
+	    |__main
+	         |__java
+		      |__org.simple
+		      |__org.simple.entity
+   </pre>
+
+3.在org.simple.entity包下创建Quote.java和Value.java文件，两个文件的代码分别如下：
+   #### 1. Quote.java
+   
+   ```
+  	@JsonIgnoreProperties(ignoreUnknown = true)
+	public class Quote {
+	
+		@JsonProperty(value="type")
+		private String type;
+
+		private Value value;
+
+		public Quote() {
+			super();
+		}
+
+		public String getType() {
+			return type;
+		}
+
+		public void setType(String type) {
+			this.type = type;
+		}
+
+		public Value getValue() {
+			return value;
+		}
+
+		public void setValue(Value value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "Quote [type=" + type + ", value=" + value + "]";
+		}		
+	}
+   ```
+   
+   #### 2. Value.java
+   
+   ```
+   	@JsonIgnoreProperties(ignoreUnknow = true)
+	public class Value {
+	
+		private long id;
+
+		private String quote;
+
+		public Value() {
+			super();
+		}
+
+		public long getId() {
+			return id;
+		}
+
+		public void setId(long id) {
+			this.id = id;
+		}
+
+		public String getQuote() {
+			return quote;
+		}
+
+		public void setQuote(String quote) {
+			this.quote = quote;
+		}
+
+		@Override
+		public String toString() {
+			return "Value [id=" + id + ", quote=" + quote + "]";
+		}
+	}
+   ```
+   
+   上面的两个类都是普通的java对象，在这两个类上我们都加上了@JsonIgnoreProperties(ignoreUnknown = true)注解，加上这个注解的目的是在后面接收从接口返回的数据时，如果用于接收数据绑定的类没有json中的属性，就不进行数据绑定。在spring的示例应用中还提到，如果返回的json数据格式的key值与接收数据的对象的属性名称不一致时，可以使用@JsonProperty注解进行处理。
+   
+4. 在org.simple包下建立Application.java文件，其代码如下：
+   
+   	```
+	@SpringBootApplication
+	public class Application {
+	
+		private static final Logger logger=LoggerFactory.getLogger(Application.class);
+
+		public static void main(String[] args) {
+			SpringApplication.run(Application.class, args);
+		}
 
 
+		@Bean
+		public RestTemplate restTemplate(RestTemplateBuilder builder) {
+			return builder.build();
+		}
+
+		@Bean
+		public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+			return args -> {
+				Quote quote = restTemplate.getForObject(
+						"http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
+				logger.info(quote.toString());
+			};
+		}
+	}
+	```
+	
+   程序中我们是用spring提供的restTemplate模拟发出请求，并接受请求响应的结果，然后使用getForObject方法将返回的结果将数据绑定到我们quote对象中。
+	
+5. 运行应用看到如下结果
+
+   ![运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557199103.jpg)
+   
+   
 
 
 
