@@ -222,7 +222,7 @@ public class GreetingController {
    #### 2. Value.java
    
    ```
-        @JsonIgnoreProperties(ignoreUnknow = true)
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public class Value {
 	
 		private long id;
