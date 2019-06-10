@@ -1,0 +1,16 @@
+server:
+    port: 8081
+
+   
+#person:
+#   name: simple
+#   age: 24
+#   boss: false
+#   birthDay: 1995/03/11
+#   occupation: {syb: progromer}
+#   friends:
+#      - friends1
+#      - friends2
+#   cat:
+#      name: cat1
+#      age: 1
