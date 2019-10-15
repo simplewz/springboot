@@ -294,6 +294,7 @@ public class GreetingController {
    ![运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557199103.jpg)
   
 ### 四.使用Maven构建Java项目
+
   maven是一个用于管理Java项目的工具,用途其一是采用约定的项目目录结构规范管理Java项目的目录结构，其二是统一维护Java项目依赖的jar包。这里我们以纯手工的方式创建并构建一个Maven项目，主要目的是熟悉Maven项目的目录结构，练习使用基本的Maven命令。
   
 1. 创建一个gs-maven的工程项目，项目目录结构如下。
@@ -385,11 +386,11 @@ public class GreetingController {
 	
 pom.xml配置文件中的一些标签说明：
 
-<modelVersion> 项目对象模型版本信息,一般是4.0.0。  	
-<groupId> 项目的组织信息。  
-<artifactId>项目名称。  
-<packaging>项目打包的方式，默认打包方式为jar包的形式。  
-<version>版本信息。  
+  <modelVersion>： 项目对象模型版本信息,一般是4.0.0。    	
+  <groupId>： 项目的组织信息。   
+  <artifactId>：项目名称。  
+  <packaging>：项目打包的方式，默认打包方式为jar包的形式。  
+  <version>：版本信息。  
 
 5. 使用maven命令构建项目。
 
@@ -481,6 +482,71 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
   
   ![mvn test命令运行成功截图](https://github.com/simplewz/springboot/blob/master/images/maven-test.png)  
   
+ 
+ 8. 本项目的完整pom.xml文件。
+ 
+ 	```
+	<?xml version="1.0" encoding="UTF-8"?>
+	<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	    <modelVersion>4.0.0</modelVersion>
+
+	    <groupId>org.springframework</groupId>
+	    <artifactId>gs-maven</artifactId>
+	    <packaging>jar</packaging>
+	    <version>0.1.0</version>
+
+	    <properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	    </properties>
+
+		<dependencies>
+			<!-- tag::joda[] -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>2.9.2</version>
+			</dependency>
+			<!-- end::joda[] -->
+			<!-- tag::junit[] -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- end::junit[] -->
+		</dependencies>
+
+	    <build>
+		<plugins>
+		    <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-shade-plugin</artifactId>
+			<version>2.1</version>
+			<executions>
+			    <execution>
+				<phase>package</phase>
+				<goals>
+				    <goal>shade</goal>
+				</goals>
+				<configuration>
+				    <transformers>
+					<transformer
+					    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+					    <mainClass>maven.HelloWorld</mainClass>
+					</transformer>
+				    </transformers>
+				</configuration>
+			    </execution>
+			</executions>
+		    </plugin>
+		</plugins>
+	    </build>
+	</project>
+	```
+ 
  #### 实际工作中使用maven都是在IDE中进行集成，在IDE中使用Maven时会更加方便，不过手动使用命令行的方式构建Java项目是会加深对Maven这个项目管理工具的使用理解。
  
 
