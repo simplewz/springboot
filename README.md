@@ -386,10 +386,10 @@ public class GreetingController {
 	
 pom.xml配置文件中的一些标签说明:
 
-  \<modelVersion\>： 项目对象模型版本信息,一般是4.0.0。    	
-  \<groupId\>： 项目的组织信息。   
+  \<modelVersion\>： 项目对象模型版本信息,一般是4.0.0。      	
+  \<groupId\>： 项目的组织信息。     
   \<artifactId\>：项目名称。  
-  \<packaging\>：项目打包的方式，默认打包方式为jar包的形式。  
+  \<packaging\>：项目打包的方式，默认打包方式为jar包的形式。    
   \<version\>：版本信息。  
 
 5. 使用maven命令构建项目。
