@@ -396,7 +396,7 @@ pom.xml配置文件中的一些标签说明:
 
 mvn compile：编译项目。命令执行成功后将会在工程目录下多出target/classes这个目录，这个目录下存放着编译后的.class文件。
 
-![mvn compile编译成功运行截图](https://github.com/simplewz/springboot/blob/master/images/maven-compile.png)
+![mvn compile编译成功运行截图](https://github.com/simplewz/springboot/blob/master/images/mvn-compile.png)
 
 mvn package:打包项目。对项目代码进行编译，执行项目中的所有测试用例，并将项目代码打包成一个jar包(如果在pom.xml配置文件中配置了package为war包，则会将项目打包为war包)。打包后的文件名称会依据配置文件中的<artifactId>和<version>进行命名。如上的pom.xml文件中的配置打包后的项目jar包应该为：gs-maven-0.1.0.jar。
 	
@@ -480,7 +480,7 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
 
   Maven使用surefire插件进行单元测试，默认配置是该插件编译运行src/test/java目录下的\*Test.java中的测试用例，注意在编写的测试用例方法中需要加上@Test注解。使用mvn test执行项目中的测试用例:
   
-  ![mvn test命令运行成功截图](https://github.com/simplewz/springboot/blob/master/images/maven-test.png)  
+  ![mvn test命令运行成功截图](https://github.com/simplewz/springboot/blob/master/images/mvn-test.png)  
   
  
  8. 本项目的完整pom.xml文件。
