@@ -338,7 +338,7 @@ public class GreetingController {
   
   ![Maven安装成功效果图](https://github.com/simplewz/springboot/blob/master/images/Maven安装成功效果图.jpg)
   
-4. Maven管理项目都是通过pom.xml(project object model的简写)配置文件进行管理的。pom文件中会详细配置Java项目的名称、版本、依赖的第三方jar包等信息，所以为了能够使用Maven工具构建Java项目，我们还需要在项目中创建这个pom.xml配置文件，**注意pom.xml配置文件所在的路径需要与src在同一级下**。pom.xml配置文件的内容如下：
+4. Maven管理项目都是通过pom.xml(project object model的简写)配置文件进行管理的。pom文件中会详细配置Java项目的名称、版本、依赖的第三方jar包等信息，所以为了能够使用Maven工具构建Java项目，我们还需要在项目中创建这个pom.xml配置文件，**注意pom.xml配置文件所在的路径需要与src目录在同一级下**。pom.xml配置文件的内容如下：
 
 	```
 	<?xml version="1.0" encoding="UTF-8"?>
@@ -400,7 +400,7 @@ mvn compile：编译项目。命令执行成功后将会在工程目录下多出
 
 mvn package:打包项目。对项目代码进行编译，执行项目中的所有测试用例，并将项目代码打包成一个jar包(如果在pom.xml配置文件中配置了package为war包，则会将项目打包为war包)。打包后的文件名称会依据配置文件中的<artifactId>和<version>进行命名。如上的pom.xml文件中的配置打包后的项目jar包应该为：gs-maven-0.1.0.jar。
 	
-mvn install:安装依赖。对项目代码进行编译、执行项目中的测试用例，将项目打包并将项目所依赖的第三方jar包也打包进来，防止别的项目依赖本项目时，本项目依赖的第三方jar包缺失。
+mvn install:安装依赖。对项目代码进行编译、执行项目中的测试用例，将项目打包并将项目所依赖的第三方jar包也打包进来，防止别的项目依赖本项目时，本项目依赖的第三方jar包缺失的情况出现。
 
 6. 添加第三方jar包依赖。
 
@@ -480,7 +480,7 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
 
   Maven使用surefire插件进行单元测试，默认配置是该插件编译运行src/test/java目录下的\*Test.java中的测试用例，注意在编写的测试用例方法中需要加上@Test注解。使用mvn test执行项目中的测试用例:
   
-  ![mvn test命令运行成功截图](https://github.com/simplewz/springboot/blob/master/images/mvn-test.png)  
+  ![mvn test命令运行成功截图](https://github.com/simplewz/springboot/blob/master/images/mvn-test.jpg)  
   
  
  8. 本项目的完整pom.xml文件。
@@ -547,7 +547,7 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
 	</project>
 	```
  
- #### 实际工作中使用maven都是在IDE中进行集成，在IDE中使用Maven时会更加方便，不过手动使用命令行的方式构建Java项目是会加深对Maven这个项目管理工具的使用理解。
+  ####  实际工作中使用maven都是在IDE中进行集成，在IDE中使用Maven时会更加方便，不过手动使用命令行的方式构建Java项目是会加深对Maven这个项目管理工具的使用理解。
  
 
 ### 五.SpringBoot项目中使用JDBC访问数据库
