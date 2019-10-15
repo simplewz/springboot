@@ -292,6 +292,53 @@ public class GreetingController {
 5. 运行应用看到如下结果
 
    ![运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557199103.jpg)
+  
+### 四.使用Maven构建Java项目
+  maven是一个用于管理Java项目的工具,用途其一是采用约定的项目目录结构规范管理Java项目的目录结构，其二是统一维护Java项目依赖的jar包。这里我们以纯手工的方式创建并构建一个Maven项目，其主要目的是熟悉Maven项目的目录结构，练习使用基本的Maven命令。
+  
+1. 创建一个gs-maven的工程项目，项目目录结构如下。**
+
+	<pre>
+		gs-maven                           项目名称
+		     |---src/main/java             存放Java代码的目录
+		     		|---maven	   存放Java代码的包(不同的类放在不同的包下)
+		     |---src/test/java		   存放测试所用的Java目录
+		     		|---test	   存放测试Java代码
+	</pre>
+
+  以上的目录结构就是一个可用maven构建的普通Java项目的目录结构，不同的项目类型目录结构会有所区别，其核心的目录结构就是这里介绍的目录结构。
+
+2. 在maven包下新增Greeter.java和HelloWorld.java文件，其代码如下：
+
+   #### Greeter.java
+  
+	  ```
+	  public class Greeter{
+		public String sayHello(){
+			return "Hello World";
+		}
+	  }
+	  ```
+  
+   #### HelloWord.java
+  
+	  ```
+	  public class HelloWorld {
+	    	public static void main(String[] args) {
+			Greeter greeter = new Greeter();
+			System.out.println(greeter.sayHello());
+	    	}
+	  }
+	  ```
+
+  经过步骤1、步骤2以后，项目已经可以用Maven工具进行构建了，接下来就是去下载安装Maven。Maven的安装地址[ https://maven.apache.org/download.cgi]( https://maven.apache.org/download.cgi),将下载好的Maven进行解压缩，然后将Maven的安装路径配置到系统的环境变量中，在命令行中输入mvn -v 命令测试Maven是否安装成功。
+  
+  ![Maven安装成功效果图](https://github.com/simplewz/springboot/blob/master/images/Maven安装成功效果图.jpg)
+
+### 五.SpringBoot项目中使用JDBC访问数据库
+### 六.SpringBoot项目中的文件上传于下载
+### 七.
+
    
    
 
