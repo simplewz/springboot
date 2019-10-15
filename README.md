@@ -384,13 +384,13 @@ public class GreetingController {
 		</project>	
 	```
 	
-pom.xml配置文件中的一些标签说明：
+pom.xml配置文件中的一些标签说明:
 
-  <modelVersion>： 项目对象模型版本信息,一般是4.0.0。    	
-  <groupId>： 项目的组织信息。   
-  <artifactId>：项目名称。  
-  <packaging>：项目打包的方式，默认打包方式为jar包的形式。  
-  <version>：版本信息。  
+  \<modelVersion\>： 项目对象模型版本信息,一般是4.0.0。    	
+  \<groupId\>： 项目的组织信息。   
+  \<artifactId\>：项目名称。  
+  \<packaging\>：项目打包的方式，默认打包方式为jar包的形式。  
+  \<version\>：版本信息。  
 
 5. 使用maven命令构建项目。
 
@@ -448,10 +448,10 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
 
 可以看到依赖jar包配置的三个重要标签配置分别是：
 
-<groupId>：项目组织。  
-<artifactId>：项目名称。  
-<version>：项目版本。  
-<scope>:其值为provided时该jar包为项目编译和运行时需要的jar包，test编译该jar包用于项目编译和运行测试用例时所用，项目实际运行时不需要。
+\<groupId\>：项目组织。  
+\<artifactId\>：项目名称。  
+\<version\>：项目版本。  
+\<scope\>:其值为provided时该jar包为项目编译和运行时需要的jar包，test编译该jar包用于项目编译和运行测试用例时所用，项目实际运行时不需要。
 
 这三个标签与pom.xml配置文件中配置项目信息的标签的含义是一致的。我们的项目打包成jar包后，别人依赖我们项目时，添加依赖时的信息与pom.xml文件中的配置信息就是用这三个标签配置的。添加依赖以后，我们重新使用mvn compile命令编译项目，然后再次运行项目可以看到项目正常运行。
 
