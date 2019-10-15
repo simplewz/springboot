@@ -294,9 +294,9 @@ public class GreetingController {
    ![运行效果图](https://github.com/simplewz/springboot/blob/master/images/1557199103.jpg)
   
 ### 四.使用Maven构建Java项目
-  maven是一个用于管理Java项目的工具,用途其一是采用约定的项目目录结构规范管理Java项目的目录结构，其二是统一维护Java项目依赖的jar包。这里我们以纯手工的方式创建并构建一个Maven项目，其主要目的是熟悉Maven项目的目录结构，练习使用基本的Maven命令。
+  maven是一个用于管理Java项目的工具,用途其一是采用约定的项目目录结构规范管理Java项目的目录结构，其二是统一维护Java项目依赖的jar包。这里我们以纯手工的方式创建并构建一个Maven项目，主要目的是熟悉Maven项目的目录结构，练习使用基本的Maven命令。
   
-1. 创建一个gs-maven的工程项目，项目目录结构如下。**
+1. 创建一个gs-maven的工程项目，项目目录结构如下。
 
 	<pre>
 		gs-maven                           项目名称
@@ -331,9 +331,158 @@ public class GreetingController {
 	  }
 	  ```
 
-  经过步骤1、步骤2以后，项目已经可以用Maven工具进行构建了，接下来就是去下载安装Maven。Maven的安装地址[ https://maven.apache.org/download.cgi]( https://maven.apache.org/download.cgi),将下载好的Maven进行解压缩，然后将Maven的安装路径配置到系统的环境变量中，在命令行中输入mvn -v 命令测试Maven是否安装成功。
+  经过步骤1、步骤2以后，项目已经可以用Maven工具进行构建了，接下来就是去下载安装Maven。
+  
+3. Maven的安装地址[ https://maven.apache.org/download.cgi]( https://maven.apache.org/download.cgi),将下载好的Maven进行解压缩，然后将Maven的安装路径配置到系统的环境变量中，在命令行中输入mvn -v 命令测试Maven是否安装成功。
   
   ![Maven安装成功效果图](https://github.com/simplewz/springboot/blob/master/images/Maven安装成功效果图.jpg)
+  
+4. Maven管理项目都是通过pom.xml(project object model的简写)配置文件进行管理的。pom文件中会详细配置Java项目的名称、版本、依赖的第三方jar包等信息，所以为了能够使用Maven工具构建Java项目，我们还需要在项目中创建这个pom.xml配置文件，**注意pom.xml配置文件所在的路径需要与src在同一级下**。pom.xml配置文件的内容如下：
+
+	```
+	<?xml version="1.0" encoding="UTF-8"?>
+		<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		    <modelVersion>4.0.0</modelVersion>
+
+		    <groupId>org.springframework</groupId>
+		    <artifactId>gs-maven</artifactId>
+		    <packaging>jar</packaging>
+		    <version>0.1.0</version>
+
+		    <properties>
+			<maven.compiler.source>1.8</maven.compiler.source>
+			<maven.compiler.target>1.8</maven.compiler.target>
+		    </properties>
+
+		    <build>
+			<plugins>
+			    <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+				    <execution>
+					<phase>package</phase>
+					<goals>
+					    <goal>shade</goal>
+					</goals>
+					<configuration>
+					    <transformers>
+						<transformer
+						    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+						    <mainClass>maven.HelloWorld</mainClass>
+						</transformer>
+					    </transformers>
+					</configuration>
+				    </execution>
+				</executions>
+			    </plugin>
+			</plugins>
+		    </build>
+		</project>	
+	```
+	
+pom.xml配置文件中的一些标签说明：
+
+<modelVersion> 项目对象模型版本信息,一般是4.0.0。  	
+<groupId> 项目的组织信息。  
+<artifactId>项目名称。  
+<packaging>项目打包的方式，默认打包方式为jar包的形式。  
+<version>版本信息。  
+
+5. 使用maven命令构建项目。
+
+mvn compile：编译项目。命令执行成功后将会在工程目录下多出target/classes这个目录，这个目录下存放着编译后的.class文件。
+
+![mvn compile编译成功运行截图](https://github.com/simplewz/springboot/blob/master/images/maven-compile.png)
+
+mvn package:打包项目。对项目代码进行编译，执行项目中的所有测试用例，并将项目代码打包成一个jar包(如果在pom.xml配置文件中配置了package为war包，则会将项目打包为war包)。打包后的文件名称会依据配置文件中的<artifactId>和<version>进行命名。如上的pom.xml文件中的配置打包后的项目jar包应该为：gs-maven-0.1.0.jar。
+	
+mvn install:安装依赖。对项目代码进行编译、执行项目中的测试用例，将项目打包并将项目所依赖的第三方jar包也打包进来，防止别的项目依赖本项目时，本项目依赖的第三方jar包缺失。
+
+6. 添加第三方jar包依赖。
+
+  对之前的HelloWorld.java文件进行编辑，编辑后的代码如下：
+  
+  #### HelloWorld.java
+
+	  ```
+		package maven;
+
+		import org.joda.time.LocalTime;
+		public class HelloWorld{
+			public static void main(String[] args){
+				Greeter greeter=new Greeter();
+				LocalTime currentTime=new LocalTime();
+				System.out.println("The current loal time is:"+currentTime);
+				System.out.println(greeter.sayHello());
+			}
+		}
+	  ```
+
+  代码中我们想使用joda-time中的LocalTime类来构造一个当前日期，因为项目中没有依赖joda-time的jar包，所以代码会进行报错。我们需要进行第三方jar包依赖。
+
+  maven添加第三方jar包依赖的方式是在pom.xml配置文件中的<dependencies>标签下添加子标签<dependencie>，这里以依赖处理时间的第三方jar包joda-time为例进行示例配置如下：
+
+	  <pre>
+		<dependencies>
+			<!-- tag::joda[] -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>2.9.2</version>
+			</dependency>
+			<!-- end::joda[] -->
+			<!-- tag::junit[] -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- end::junit[] -->
+		</dependencies>
+	  </pre>
+
+可以看到依赖jar包配置的三个重要标签配置分别是：
+
+<groupId>：项目组织。  
+<artifactId>：项目名称。  
+<version>：项目版本。  
+<scope>:其值为provided时该jar包为项目编译和运行时需要的jar包，test编译该jar包用于项目编译和运行测试用例时所用，项目实际运行时不需要。
+
+这三个标签与pom.xml配置文件中配置项目信息的标签的含义是一致的。我们的项目打包成jar包后，别人依赖我们项目时，添加依赖时的信息与pom.xml文件中的配置信息就是用这三个标签配置的。添加依赖以后，我们重新使用mvn compile命令编译项目，然后再次运行项目可以看到项目正常运行。
+
+7. 使用Maven进行项目测试
+
+  首先在pom.xml配置文件中添加junit单元测试依赖包,添加配置的在上面添加joda-time依赖时一起添加了。然后再src/test/java下的test包下添加Greeter.java文件，代码如下：
+  
+	  ```
+		package test;
+
+		import static org.hamcrest.CoreMatchers.containsString;
+		import static org.junit.Assert.*;
+		import org.junit.Test;
+
+		import maven.Greeter;
+		public class GreeterTest{
+	
+			private Greeter greeter=new Greeter();
+
+			@Test
+			public void greeterSayHello(){
+				assertThat(greeter.sayHello(),containsString("Hello"));
+			}
+		}
+	  ```
+
+  Maven使用surefire插件进行单元测试，默认配置是该插件编译运行src/test/java目录下的\*Test.java中的测试用例，注意在编写的测试用例方法中需要加上@Test注解。使用mvn test执行项目中的测试用例:
+  
+  ![mvn test命令运行成功截图](https://github.com/simplewz/springboot/blob/master/images/maven-test.png)  
+  
+ #### 实际工作中使用maven都是在IDE中进行集成，在IDE中使用Maven时会更加方便，不过手动使用命令行的方式构建Java项目是会加深对Maven这个项目管理工具的使用理解。
+ 
 
 ### 五.SpringBoot项目中使用JDBC访问数据库
 ### 六.SpringBoot项目中的文件上传于下载
