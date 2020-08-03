@@ -108,7 +108,7 @@ public class GreetingController {
 	 |__main
 	      |__java
 	           |__org.simple.schedul
-		   |__org.simple.schedul.sercice
+		   |__org.simple.schedul.service
   </pre>
   
   3.在包org.simple.schedul下创建Application.java文件，其代码如下：
@@ -398,7 +398,7 @@ pom.xml配置文件中的一些标签说明:
 
 5. 使用maven命令构建项目。
 
-mvn compile：编译项目。命令执行成功后将会在工程目录下多出target/classes这个目录，这个目录下存放着编译后的.class文件。
+mvn compile：编译项目命令执行成功后将会在工程目录下多出target/classes这个目录，这个目录下存放着编译后的.class文件。
 
 ![mvn compile编译成功运行截图](https://github.com/simplewz/springboot/blob/master/images/mvn-compile.png)
 
@@ -555,6 +555,67 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
  
 
 ### 五.SpringBoot项目中使用JDBC访问数据库
+
+   访问数据库是我们开发应用时必不可少一个环节，使用SpringBoot能够简化我们在应用开发时访问数据库的代码量，本节我们将体验使用SpringBoot自带的JdbcTemplate快速访问关系型数据库(h2)。
+   
+1. 首先建立一个gs-relational-data-access的maven工程，工程项目结构如下：
+
+	<pre>
+		gs-relational-data-access
+			|---src/main/java
+				|---org.simple
+				|---org.simple.entity
+			|---src/main/test
+	</pre>
+
+2. 编写pom配置文件，完整的pom配置文件如下：
+
+	```
+	<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	  <modelVersion>4.0.0</modelVersion>
+	  <groupId>org.simple</groupId>
+	  <artifactId>gs-relational-data-access</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+
+	  <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.6.RELEASE</version>
+	  </parent>
+
+	  <properties>
+		<java.version>1.8</java.version>
+	  </properties>
+
+	  <dependencies>
+		<!-- springboot整合jdbc -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<!-- h2数据库 -->
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		</dependency>
+	  </dependencies>
+
+
+	  <build>
+		<plugins>
+		    <plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+		    </plugin>
+		</plugins>
+	   </build>
+
+	</project>
+	```
+3. 
+
 ### 六.SpringBoot项目中的文件上传于下载
 ### 七.
 
