@@ -620,7 +620,7 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
    
    首先在org.simple.entity包下新建一个实体类，其代码如下：
    
-   ####Customer.java
+   #### Customer.java
    
 	  ```
 	  package org.simple.entity;
@@ -722,7 +722,11 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
    ![运行结果截图](https://github.com/simplewz/springboot/blob/master/images/gs-relational-data-access.png)
   
 
-### 六.SpringBoot项目中的文件上传于下载
+### 六.SpringBoot项目中的文件上传与下载
+
+
+
+
 ### 七.
 
    
