@@ -614,7 +614,113 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
 
 	</project>
 	```
-3. 
+3. 编写业务代码
+
+   本教程中我们使用的关系型数据库为h2（基于内存的关系数据库引擎）关系型数据库，SpringBoot支持h2关系数据库，并且自动创建好了数据库连接。其原因是我们使用spring-jdbc依赖，SpringBoot为我们自动创建一个操作数据库的jdbcTemplate对象,并且将该对象注入Spring容器中进行关系，所以在项目中我们可以使用@Autowired注解自动装载这个操作数据库的jdbcTemplate对象。
+   
+   首先在org.simple.entity包下新建一个实体类，其代码如下：
+   
+   ####Customer.java
+   
+	  ```
+	  package org.simple.entity;
+
+	  public class Customer {
+
+		private long id;
+
+		private String firstName;
+
+		private String lastName;
+
+		public Customer() {
+			super();
+		}
+
+		public Customer(long id, String firstName, String lastName) {
+			super();
+			this.id = id;
+			this.firstName = firstName;
+			this.lastName = lastName;
+		}
+
+		public long getId() {
+			return id;
+		}
+
+		public void setId(long id) { }
+
+		public String getFirstName() {
+			return firstName;
+		}
+
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
+		}
+
+		public String getLastName() {
+			return lastName;
+		}
+
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
+		}
+
+		@Override   
+		public String toString() {
+			return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+		}
+	  }
+	  ```
+  
+  然后编写住启动类，主启动类的代码如下：
+  
+	  ```
+	@SpringBootApplication
+	public class Application implements CommandLineRunner{
+	
+		private static final Logger logger=LoggerFactory.getLogger(Application.class);
+
+		@Autowired
+		private JdbcTemplate jdbcTemplate;
+
+		public static void main(String[] args) {
+			SpringApplication.run(Application.class, args);
+		}
+
+		@Override
+		public void run(String... args) throws Exception {
+			logger.info("Createing tables");
+
+			jdbcTemplate.execute("Drop table customers if exists");
+			jdbcTemplate.execute("CREATE TABLE customers(" +
+			"id SERIAL, first_name VARCHAR(255), last_name VARCHAR(255))");
+
+			List<Object[]> splitUpNames=Arrays.asList("John Woo","Jeff Dean","Josh Bloch","Josh Long").stream()
+										.map(name -> name.split(" "))
+								.collect(Collectors.toList());
+
+			 splitUpNames.forEach(name -> logger.info(String.format("Inserting customer record for %s %s", name[0], name[1])));
+
+			 jdbcTemplate.batchUpdate("INSERT INTO customers(first_name, last_name) VALUES (?,?)", splitUpNames);
+
+		logger.info("Querying for customer records where first_name = 'Josh':");
+		jdbcTemplate.query(
+			"SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[] { "Josh" },
+			(rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
+		).forEach(customer -> logger.info(customer.toString()));
+
+		}
+	}
+	  ```
+	 
+  上述主启动类使用@SpringApplication注解标注，表明该类是Spring应用程序的主启动类，主启动类中的main方法写法固定。该主启动类还实现了CommandLineRunner接口，该接口中只有一个run方法，这意味着应用程序启动完成之后将会自动执行run方法。在主启动类中，我们还使用@Autowired注解自动注入了SpringBoot操作数据库的jdbcTemplate对象。
+  在run方法中，首先使用jdbcTemplate执行建表语句，然后使用jdbcTemplate的batchUpdate方法向数据库中批量添加了4条记录，最后使用jdbcTemplate查询出2条first_name=Josh的记录。
+ 
+ 4. 程序运行结果
+ 
+   ![运行结果截图](https://github.com/simplewz/springboot/blob/master/images/gs-relational-data-access.png)
+  
 
 ### 六.SpringBoot项目中的文件上传于下载
 ### 七.
