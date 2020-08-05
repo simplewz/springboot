@@ -723,8 +723,132 @@ mvn install:安装依赖。对项目代码进行编译、执行项目中的测�
   
 
 ### 六.SpringBoot项目中的文件上传与下载
+   
+   文件上传于下载是我们进行web项目开发中经常会用到的操作，本教程我们将会体验使用SpringBoot进行文件的上传与下载。
 
+1. 首先建立一个名称为gs-uploading-files的maven工程，也可使用Spring 官方提供的spring 应用初始化器进行项目的创建，Spring初始化页面地址[spring Initializr](https://start.spring.io/)。
+   创建好工程项目后，建立如下目录结构。
 
+	<pre>
+		gs-uploading-files
+			|---src/main/java
+				|---org.simple                          #Spring 主启动类所在包
+				|---org.simple.config                   #存放有关配置的包
+				|---org.simple.controller               #存放接口层类的包
+				|---org.simple.exception                #存放自定义异常类包
+				|---org.simple.service                  #存放服务接口
+				|---org.simple.service.impl             #服务接口实现包
+			|---src/main/resource                           #项目类路径
+				|---template                            #存放模板引擎解析的模板页面目录
+				application.yml                         #应用配置文件
+	</pre>
+
+2. 修改pom文件，引入依赖jar包。本项目完整的pom.xml文件如下(也可参见spring 官网的guide项目[gs-uploading-files](https://spring.io/guides/gs/uploading-files/))。
+
+	```xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	  <modelVersion>4.0.0</modelVersion>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>gs-uploading-files</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	  <description>demo for upload files with springboot</description>
+  
+	  <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.6.RELEASE</version>
+	  </parent>
+
+	  <properties>
+	      <java.version>1.8</java.version>
+	  </properties>
+  
+         <dependencies>
+	     <dependency>
+		 <groupId>org.springframework.boot</groupId>
+		 <artifactId>spring-boot-starter-web</artifactId>
+	     </dependency>
+	     <dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-thymeleaf</artifactId>
+	    </dependency>
+
+	   <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-test</artifactId>
+	        <scope>test</scope>
+	  </dependency>
+        </dependencies>
+
+	<build>
+		<plugins>
+		    <plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+		    </plugin>
+		</plugins>
+       </build>
+     </project>
+	```
+3. 在org.simple.config下建立StorageProperties.java类。
+ 
+   #### StorageProperties.java
+	
+	```java
+	package org.simple.config;
+
+	import org.springframework.boot.context.properties.ConfigurationProperties;
+
+	@ConfigurationProperties("org.simple.config")
+	public class StorageProperties {
+	    private String location = "upload-dir";
+
+	    public String getLocation() {
+		return location;
+	    }
+
+	    public void setLocation(String location) {
+		this.location = location;
+	    }
+	}
+	```
+	
+	StorageProperties.java类的作用是配置文件上传后的保存地址，其路径地址保存在成员变量location中，需要注意的是该类使用@ConfigurationProperties注解标注，且该类中成员变量location需要提供getter和setter方法。为了使该类能够从配置文件中读取到配置项，该类需要是Spring容器中的组件，可以使用@component注解标注该类，使之成为Spring容器中的组件(这里我们指定成员变量的location值为upload-dir,即文件上传成功后会保存在项目的类路径下的upload-dir目录下，一般情况下可以在@ConfigurationProperties注解中使用prefix指定读取配置文件中的配置项)。也可以是在项目配置类中使用@EnableConfigurationProperties(StorageProperties.class)将该类的对象注入Spring 容器中。这里我们采用第二中方式。
+	
+	在spring的主启动类上使用@EnableConfigurationProperties(StorageProperties.class)注解，项目的主启动类如下：
+	
+	```java
+		package org.simple;
+
+		import org.simple.config.StorageProperties;
+		import org.simple.service.StorageService;
+		import org.springframework.boot.CommandLineRunner;
+		import org.springframework.boot.SpringApplication;
+		import org.springframework.boot.autoconfigure.SpringBootApplication;
+		import org.springframework.boot.context.properties.EnableConfigurationProperties;
+		import org.springframework.context.annotation.Bean;
+		@SpringBootApplication
+		@EnableConfigurationProperties(StorageProperties.class)
+		public class Application {
+			public static void main(String[] args) {
+				SpringApplication.run(Application.class, args);
+			}
+
+			@Bean
+		    CommandLineRunner init(StorageService storageService) {
+			return (args) -> {
+			    storageService.deleteAll();
+			    storageService.init();
+			};
+		    }
+		}
+
+	```
+	
+	上述主启动类中还配置了一个CommandLineRunner类型的bean，表明Spring应用在启动时将会执行其中的run方法。该类中只有一个run方法，这里使用java 8的lambda表达式实现了这个类，其中的两个方法
 
 
 ### 七.
